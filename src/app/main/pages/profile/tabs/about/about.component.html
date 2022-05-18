@@ -1,0 +1,55 @@
+<div id="about" class="p-24" fxLayout="row wrap">
+
+    <div class="about-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="50">
+
+        <div class="profile-box info-box general" fxLayout="column">
+
+            <header class="accent">
+                <div class="title">{{'ABOUT.GENERAL' | translate}}</div>
+            </header>
+
+            <div class="content">
+                <div class="info-line">
+                    <div class="title">{{'ABOUT.USERNAME' | translate}}</div>
+                    <div class="info">{{user.username}}</div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">{{'ABOUT.ROLES' | translate}}</div>
+                    <div class="info">{{user.roles}}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="about-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="50">
+
+        <div class="profile-box info-box general" fxLayout="column">
+
+            <header class="accent">
+                <div class="title">{{'ABOUT.CONNECTED' | translate}}</div>
+            </header>
+
+            <div class="content">
+                <div class="info-line">
+                    <div class="title">{{'ABOUT.CLASS' | translate}}</div>
+                    <div class="info">{{user.ekeMember.ekeClass.name}}
+                        <a mat-stroked-button style="float:right"
+                            [routerLink]="['/apps/eke/classes', user.ekeMember.ekeClass.id]">{{'ABOUT.REDIRECTTOCLASS' | translate}}</a>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">{{'ABOUT.NAME' | translate}}</div>
+                    <div class="info">{{user.ekeMember.fullName}}
+                        <a mat-stroked-button style="float:right"
+                            [routerLink]="['/apps/eke/members', user.ekeMember.id]">{{'ABOUT.REDIRECTTOMEMBER' | translate}}</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

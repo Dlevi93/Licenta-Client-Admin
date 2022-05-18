@@ -1,0 +1,116 @@
+<div id="articles" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    accessibility_new
+                </mat-icon>
+                <span class="logo-text h1"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'COMMENTS.TITLE' | translate}}</span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="{{'COMMENTS.SEARCH' | translate}}">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="orders-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar>
+
+                <ng-container matColumnDef="logo">
+                    <mat-header-cell fxFlex="96px" *matHeaderCellDef></mat-header-cell>
+                    <mat-cell fxFlex="96px" *matCellDef="let comment">
+                        <img class="avatar" *ngIf="comment.imagePath" [alt]="comment.fullName"
+                            [src]="comment.imagePath" />
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'COMMENTS.FULLNAME' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let comment">
+                        <p class="text-truncate">{{comment.fullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'COMMENTS.EMAIL' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let comment">
+                        <p class="text-truncate">{{comment.email}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="articleTitle">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'COMMENTS.ARTICLETITLE' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let comment">
+                        <p class="text-truncate" [matTooltip]="comment.article.title">{{comment.article.title}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="text">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'COMMENTS.TEXT' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let comment">
+                        <p class="text-truncate" [matTooltip]="comment.text" [innerHtml]="comment.text"></p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dateCreated">
+                    <mat-header-cell fxFlex="148px" *matHeaderCellDef mat-sort-header>
+                        {{'COMMENTS.DATECREATED' | translate}}</mat-header-cell>
+                    <mat-cell fxFlex="148px" *matCellDef="let comment">
+                        <p class="text-truncate">{{comment.dateCreated | date:'mediumDate':'':'ro'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="articleLink">
+                    <mat-header-cell fxFlex="186px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell fxFlex="186px" *matCellDef="let comment">
+                        <button mat-button mat-raised-button color="accent" style="margin-right: 15px;">
+                            Link
+                        </button>
+                        <button mat-button mat-raised-button color="warn" (click)="removeComment(comment.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let article; columns: displayedColumns;" class="order" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.totalCount" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

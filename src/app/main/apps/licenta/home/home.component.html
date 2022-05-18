@@ -1,0 +1,262 @@
+<div id="home" class="page-layout simple right-sidebar" fxLayout="row">
+
+    <!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+
+        <!-- HEADER -->
+        <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+
+                <span class="mat-display-1 my-0 my-sm-24 welcome-message" [@animate]="{value:'*',params:{x:'50px'}}">
+                    {{'HOME.WELCOME' | translate}}, {{user.username}}
+                </span>
+            </div>
+        </div>
+        <!-- / HEADER -->
+
+        <div class="content" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between">
+
+            <!-- <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" fxFlex.gt-md="65" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-md="50">
+
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">
+                                <mat-icon>supervised_user_circle</mat-icon>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="light-blue-fg font-size-72 line-height-72">
+                                {{ekeStats.members}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">
+                                {{'HOME.MEMBER' | translate}}
+                            </div>
+                        </div>
+
+                        <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="start center">
+                            <span class="h4 secondary-text text-truncate">
+                                {{'HOME.ACTIVES' | translate}}:
+                            </span>
+                            <span class="h4 ml-8">{{ekeStats.activeMembers}}</span>
+                        </div>
+                    </div>
+
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            -
+                        </div>
+                    </div>
+
+                </fuse-widget>
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-md="50">
+
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">
+                                <mat-icon>chat</mat-icon>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="red-fg font-size-72 line-height-72">
+                                {{ekeStats.ekeClasses}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">
+                                {{'HOME.CLASS' | translate}}
+                            </div>
+                        </div>
+
+                        <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="start center">
+                            <span class="h4 secondary-text text-truncate">
+                                {{'HOME.ACTIVES' | translate}}:
+                            </span>
+                            <span class="h4 ml-8">{{ekeStats.activeEkeClasses}}</span>
+                        </div>
+                    </div>
+
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            -
+                        </div>
+                    </div>
+
+                </fuse-widget>
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-md="50">
+
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">
+                                <mat-icon>local_florist</mat-icon>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="red-fg font-size-72 line-height-72">
+                                {{ekeStats.hobbyList.length}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">
+                                {{'HOME.HOBBY' | translate}}
+                            </div>
+                        </div>
+
+                        <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="start center"
+                            *ngFor="let row of ekeStats.hobbyList">
+                            <span class="h4 secondary-text text-truncate">
+                                {{row.key}}:
+                            </span>
+                            <span class="h4 ml-8">{{row.value}}</span>
+                        </div>
+                    </div>
+
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            -
+                        </div>
+                    </div>
+
+                </fuse-widget>
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-md="50">
+
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">
+                                <mat-icon>outlined_flag</mat-icon>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="red-fg font-size-72 line-height-72">
+                                {{ekeStats.languageList.length}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">
+                                {{'HOME.LANGUAGE' | translate}}
+                            </div>
+                        </div>
+
+                        <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="start center"
+                            *ngFor="let row of ekeStats.languageList">
+                            <span class="h4 secondary-text text-truncate">
+                                {{row.key}}:
+                            </span>
+                            <span class="h4 ml-8">{{row.value}}</span>
+                        </div>
+                    </div>
+
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            -
+                        </div>
+                    </div>
+
+                </fuse-widget>
+
+            </div>
+
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" fxFlex.gt-md="35" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}" style="width: 100%">
+
+                <div class="mb-48" class="py-12 h-52 w-100p">
+                    <div class="fuse-card">
+
+                        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h1 pr-16">{{'HOME.AWARD' | translate}}</div>
+                        </div>
+
+                        <table class="simple clickable">
+                            <thead>
+                                <tr>
+                                    <th>{{'HOME.AWARDNAME' | translate}}</th>
+                                    <th class="text-right">{{'HOME.AWARDMEMBER' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of ekeStats.awardList">
+                                    <td>{{row.key}}</td>
+                                    <td class="text-right">{{row.value}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="card-divider full-width"></div>
+                    </div>
+
+                </div>
+
+            </div> -->
+        </div>
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <fuse-sidebar class="sidebar" name="project-dashboard-right-sidebar-1" position="right" lockedOpen="gt-md">
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content" fusePerfectScrollbar>
+
+            <!-- <div class="widget-group" fxLayout="column" fxFlex="100" [@animateStagger]="{value:'50'}">
+
+                <div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'" class="pl-16 pr-8 py-16 h-52">
+                    <div class="fuse-card">
+
+                        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h1 pr-16">{{'HOME.CAMPINFO' | translate}}</div>
+                        </div>
+
+                        <table class="simple clickable">
+                            <thead>
+                                <tr>
+                                    <th>{{'HOME.CAMPNAME' | translate}}</th>
+                                    <th class="text-right">{{'HOME.MEMBERATTENDED' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of ekeStats.campList">
+                                    <td>{{row.key}}</td>
+                                    <td class="text-right">{{row.value}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="card-divider full-width"></div>
+                    </div>
+
+                </div>
+
+            </div> -->
+
+        </div>
+        <!-- / SIDEBAR CONTENT -->
+
+    </fuse-sidebar>
+    <!-- / SIDEBAR -->
+
+</div>

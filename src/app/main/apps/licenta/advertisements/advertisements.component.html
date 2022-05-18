@@ -1,0 +1,161 @@
+<div id="ads" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    accessibility_new
+                </mat-icon>
+                <span class="logo-text h1"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'ADS.TITLE' | translate}}</span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="{{'ADS.SEARCH' | translate}}">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <form name="adForm" [formGroup]="adForm">
+                <div class="p-24">
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="15">
+                            <mat-label>{{'AD.NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'AD.NAME' | translate}}" name="name" formControlName="name"
+                                required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                            <mat-label>{{'AD.LINK' | translate}}</mat-label>
+                            <input matInput placeholder="{{'AD.LINK' | translate}}" name="link" formControlName="link"
+                                required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15">
+                            <mat-label>{{'AD.POSITION' | translate}}</mat-label>
+                            <mat-select formControlName="position" required>
+                                <mat-option *ngFor="let adPositionItem of adPositionKeys"
+                                    [value]="adPositions[adPositionItem]">
+                                    {{ 'AD.'+ adPositionItem | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div fxFlex="25">
+                            <div class="center" fxFlex="70">
+                                <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+                                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                                        Incarcare imagine: &nbsp;
+                                        <button mat-raised-button type="button"
+                                            (click)="openFileSelector()">Browse</button>
+                                    </ng-template>
+                                </ngx-file-drop>
+                            </div>
+                            <div class="upload-table" fxFlex="15">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Spre incarcare</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="upload-name-style">
+                                        <tr *ngFor="let item of files; let i=index">
+                                            <td><strong>{{ item.relativePath }}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div fxFlex="5">
+                            <button mat-raised-button (click)="saveAd()"
+                                class="add-product-button fuse-white mt-24 mt-md-0">
+                                <span>{{'ADS.NEW' | translate}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <mat-table class="orders-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar>
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'ADS.NAME' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let ad">
+                        <p class="text-truncate">{{ad.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dateCreated">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'ADS.DATECREATED' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let ad">
+                        <p class="text-truncate">{{ad.dateCreated | date:'mediumDate':'':'ro'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ADS.POSITION' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let ad" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{adPositions[ad.position]}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="clicks">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ADS.CLICKS' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let ad" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{ad.clicks}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="adsLink">
+                    <mat-header-cell fxFlex="186px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell fxFlex="186px" *matCellDef="let ad">
+                        <button mat-button mat-raised-button color="accent" style="margin-right: 15px;">
+                            Link
+                        </button>
+                        <button mat-button mat-raised-button color="warn" (click)="removeAd(ad.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let ad; columns: displayedColumns;" class="order" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.totalCount" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

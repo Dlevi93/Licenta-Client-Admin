@@ -1,0 +1,198 @@
+<div id="article" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/eke/articles'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{article.title}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{'ARTICLE.NEW' | translate}}
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="pageType ==='edit'">
+                        <span>{{article.category.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-product-button" [disabled]="articleForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addArticle()">
+                <span>{{'ARTICLE.ADD' | translate}}</span>
+            </button>
+
+            <button mat-raised-button class="save-product-button"
+                [disabled]="articleForm.invalid || articleForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveMember()">
+                <span>{{'ARTICLE.SAVE' | translate}}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="articleForm" [formGroup]="articleForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+                        <mat-tab label="{{'ARTICLE.BASICINFO' | translate}}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="40">
+                                        <mat-label>{{'ARTICLE.TITLE' | translate}}</mat-label>
+                                        <input matInput placeholder="{{'ARTICLE.TITLE' | translate}}" name="title"
+                                            formControlName="title" required>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="15">
+                                        <mat-label>{{'ARTICLE.AUTHOR' | translate}}</mat-label>
+                                        <input matInput placeholder="{{'ARTICLE.AUTHOR' | translate}}" name="author"
+                                            formControlName="author" required>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="15">
+                                        <mat-label>{{'ARTICLE.CATEGORY' | translate}}</mat-label>
+                                        <mat-select [(value)]="article.category.id"
+                                            (selectionChange)="changeCategory($event.value)"
+                                            formControlName="categoryId">
+                                            <mat-option *ngFor="let category of categories" [value]="category.id">
+                                                {{category.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-checkbox class="pt-20" fxFlex="15" formControlName="leading">
+                                        {{'ARTICLE.LEADING' | translate}}</mat-checkbox>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>{{'ARTICLE.STYLE' | translate}}</mat-label>
+                                        <mat-select (selectionChange)="setArticleType($event)" [(value)]="article.style"
+                                            formControlName="style" required>
+                                            <mat-option *ngFor="let articleStyleItem of articleStyleKeys"
+                                                [value]="articleStyles[articleStyleItem]">
+                                                {{ 'ARTICLE.'+ articleStyleItem | translate}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="35">
+                                        <mat-label>{{'ARTICLE.CREATEDDATE' | translate}}</mat-label>
+                                        <input matInput [ngxMatDatetimePicker]="picker" formControlName="dateCreated">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="20">
+                                        <mat-label>{{'ARTICLE.VIEWS' | translate}}</mat-label>
+                                        <input matInput placeholder="{{'ARTICLE.VIEWS' | translate}}" name="views"
+                                            formControlName="views" required>
+                                    </mat-form-field>
+
+                                    <mat-checkbox class="pt-20" fxFlex="15" formControlName="active">
+                                        {{'ARTICLE.ACTIVE' | translate}}</mat-checkbox>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                        <mat-label>{{'ARTICLE.IMAGEAUTHOR' | translate}}</mat-label>
+                                        <input matInput placeholder="{{'ARTICLE.IMAGEAUTHOR' | translate}}" name="imgAuthor"
+                                            formControlName="imgAuthor">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                        <mat-label>{{'ARTICLE.SLUG' | translate}}</mat-label>
+                                        <input matInput placeholder="{{'ARTICLE.SLUG' | translate}}" name="slug"
+                                            formControlName="slug" required>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div class="pb-24" fxLayout="row" fxLayoutAlign="space-between">
+                                    <div class="center" fxFlex="70">
+                                        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+                                            <ng-template ngx-file-drop-content-tmp
+                                                let-openFileSelector="openFileSelector">
+                                                Incarcare imagine: &nbsp;
+                                                <button mat-raised-button type="button"
+                                                    (click)="openFileSelector()">Browse</button>
+                                            </ng-template>
+                                        </ngx-file-drop>
+                                    </div>
+                                    <div class="upload-table" fxFlex="15">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Spre incarcare</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="upload-name-style">
+                                                <tr *ngFor="let item of files; let i=index">
+                                                    <td><strong>{{ item.relativePath }}</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="upload-table" fxFlex="15">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Deja incarcate</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="upload-name-style">
+                                                <tr *ngFor="let item of article.files; let i=index">
+                                                    <td><strong>{{ item.fileName }}</strong></td>
+                                                    <td><button mat-icon-button class="secondary-text"
+                                                            (click)="removePic(item.id)">
+                                                            <mat-icon class="s-20">delete</mat-icon>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <quill-editor #editor formControlName="text"></quill-editor>
+                            </div>
+
+                        </mat-tab>
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

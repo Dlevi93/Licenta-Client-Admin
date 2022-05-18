@@ -1,0 +1,151 @@
+<div id="articles" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    accessibility_new
+                </mat-icon>
+                <span class="logo-text h1"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'ARTICLES.TITLE' | translate}}</span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="{{'ARTICLES.SEARCH' | translate}}">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mt-md-0">
+                <div class="search" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 1 auto">
+                    <mat-form-field appearance="standard" fxFlex="100">
+                        <mat-select [(value)]="selectedCategory" (selectionChange)="changeCategory($event.value)">
+                            <mat-option [value]="0">Toate categoriile</mat-option>
+                            <mat-option *ngFor="let category of dataSource.categories" [value]="category.id">
+                                {{category.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- SEARCH -->
+
+            <mat-checkbox (change)="checkActives($event.checked)" [(ngModel)]="justActives">
+                {{'ARTICLES.ACTIVE' | translate}}
+            </mat-checkbox>
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="'/apps/licenta/articles/new'"
+                class="add-product-button fuse-white mt-24 mt-md-0">
+                <span>{{'ARTICLES.NEW' | translate}}</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="orders-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar>
+
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'ARTICLES.NAME' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article">
+                        <p class="text-truncate">{{article.title}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dateCreated">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'ARTICLES.DATECREATED' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article">
+                        <p class="text-truncate">{{article.dateCreated | date:'mediumDate':'':'ro'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="slug">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ARTICLES.SLUG' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{article.slug}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="leading">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ARTICLES.LEADING' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{article.leading}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="active">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ARTICLES.ACTIVE' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{article.active}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="category">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ARTICLES.CATEGORY' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{article.category.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="views">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        {{'ARTICLES.VIEWS' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let article" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{article.views}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="articleLink">
+                    <mat-header-cell fxFlex="186px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell fxFlex="186px" *matCellDef="let article" (click)="$event.stopPropagation()">
+                        <button mat-button mat-raised-button color="accent" style="margin-right: 15px;">
+                            Link
+                        </button>
+                        <button mat-button mat-raised-button color="warn" (click)="removeArticle(article.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let article; columns: displayedColumns;" class="order" matRipple
+                    [routerLink]="'/apps/licenta/articles/'+article.slug">
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.totalCount" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
